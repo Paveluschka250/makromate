@@ -1,50 +1,53 @@
-# Welcome to your Expo app 👋
+## Components
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+- `AppShell` – Root-Layout, Tabs/Navigation
+- `HomeScreen`
+- `DaySwipePager` – horizontales Swipen zwischen Tagen
+- `DailySummaryHeader` – Container für die zwei Kreise
+- `ProgressRing` – wiederverwendbarer Kreis (Kalorien/Protein)
+- `MacroBadge` – kleiner KPI/Label für Ziel/Consumed
+- `FoodEntryList`
+- `FoodEntryRow`
+- `AddFoodFab` – Floating Action Button
+- `AddFoodModal`
+- `FoodSearchInput`
+- `FoodSearchList`
+- `FoodSearchRow`
+- `FavoriteSectionHeader`
+- `CreateFoodForm`
+- `NumberInputRow` – generische Zahleneingabe (g, kcal/100g, protein/100g)
+- `CalendarScreen`
+- `MonthlyCalendar`
+- `CalendarDayCell`
+- `DayStatusDot` – grün/gelb/rot
+- `DayDetailDrawer` (oder `DayDetailModal`)
+- `FoodDatabaseScreen`
+- `FoodDatabaseList`
+- `FoodDatabaseRow`
+- `FoodActionsMenu` – edit/delete/favorite
+- `ProfileSettingsScreen`
+- `GoalInputForm`
+- `GoalInputRow`
+- `EmptyState` – für leere Listen
+- `ConfirmDialog` – für Delete
 
-## Get started
+## Hilfsfunktionen / Utilities
 
-1. Install dependencies
+- `calcTotalsForDay(entries)` → { calories, protein, grams }
+- `calcFromPer100g({ per100, grams })`
+- `calcProgress({ consumed, goal })` → 0..1
+- `clamp(value, min, max)`
+- `formatNumber(value)` / `formatGrams(value)`
+- `getDayId(date)` → string key `YYYY-MM-DD`
+- `parseDayId(id)` → Date
+- `addDays(date, n)`
+- `isSameDay(a,b)`
+- `getDayStatus({ calories, protein, goals })` → "green"|"yellow"|"red"
+- `sortFoods(favoritesFirst, searchQuery)`
+- `filterFoodsByQuery(foods, query)`
+- `toggleFavorite(foodId)`
+- `buildFoodEntry({ foodId, grams, per100 })`
+- `updateEntryAmount(entryId, grams)`
+- `roundToStep(value, step)` – z.B. 5g Schritte
+- `normalizeFoodInput(form)` – Zahlen/NaN/Minwerte
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
