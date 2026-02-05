@@ -1,35 +1,64 @@
+## Screens
+
+- [ ] `HomeScreen`
+- [ ] `Add Food (Modal)` – eigener Screen/Flow zum Hinzufügen von Lebensmitteln
+- [ ] `CalendarScreen`
+- [ ] `FoodDatabaseScreen`
+- [ ] `ProfileSettingsScreen`
+
 ## Components
 
+### App / global
+
 - [ ] `AppShell` – Root-Layout, Tabs/Navigation
-- [ ] `HomeScreen`
+- [ ] `Button` – wiederverwendbare Button-Component (Primary, Secondary, Text etc.)
+- [ ] `Input` – wiederverwendbares Text-/Zahlen-Eingabefeld (mit Label, Placeholder, optionaler Validierung)
+- [ ] `FoodRow` – eine Zeile pro Lebensmittel (Name, Menge, Nährwerte, favorite Icon); wird auf Home, Add-Food-Modal und Food Database genutzt
+- [ ] `ConfirmDialog` – für Delete
+
+### Home
+
 - [ ] `DaySwipePager` – horizontales Swipen zwischen Tagen
-- [ ] `DailySummaryHeader` – Container für die zwei Kreise
 - [ ] `ProgressRing` – wiederverwendbarer Kreis (Kalorien/Protein)
 - [ ] `MacroBadge` – kleiner KPI/Label für Ziel/Consumed
-- [ ] `FoodEntryList`
-- [ ] `FoodEntryRow`
-- [ ] `AddFoodFab` – Floating Action Button
-- [ ] `AddFoodModal`
+- [ ] `AddFoodFab` – Floating Action Button (öffnet Add-Food-Modal)
+- [ ] `CreateFoodForm` – Formular zum Anlegen eines neuen Lebensmittels. Wird auf dem `Food Database`Screen und im `Add Food (Modal)` genutzt.
+
+### Add Food (Modal)
+
 - [ ] `FoodSearchInput`
-- [ ] `FoodSearchList`
-- [ ] `FoodSearchRow`
-- [ ] `FavoriteSectionHeader`
-- [ ] `CreateFoodForm`
+- [ ] `FoodSearchList` – Suchergebnisse mit `FoodRow`
 - [ ] `NumberInputRow` – generische Zahleneingabe (g, kcal/100g, protein/100g)
-- [ ] `CalendarScreen`
-- [ ] `MonthlyCalendar`
-- [ ] `CalendarDayCell`
-- [ ] `DayStatusDot` – grün/gelb/rot
+
+### Calendar
+
+- [ ] `MonthlyCalendar` – Zeigt eine Monatsübersicht mit allen Tagen an. Jeder Tag kann farblich markiert werden (z.B. grün/gelb/rot je nach Ernährungsstatus), Auswahl eines Tages öffnet Details (z.B. im DayDetailDrawer). Nutzt optimalerweise die Bibliothek `react-native-calendars`.
 - [ ] `DayDetailDrawer` (oder `DayDetailModal`)
-- [ ] `FoodDatabaseScreen`
-- [ ] `FoodDatabaseList`
-- [ ] `FoodDatabaseRow`
-- [ ] `FoodActionsMenu` – edit/delete/favorite
-- [ ] `ProfileSettingsScreen`
+
+### Food Database
+
+- [ ] `FoodDatabaseList` – nutzt `FoodRow` + `FoodActionsMenu`
+- [ ] `FoodActionsMenu` – edit/delete
+
+### Profile / Settings
+
 - [ ] `GoalInputForm`
 - [ ] `GoalInputRow`
-- [ ] `EmptyState` – für leere Listen
-- [ ] `ConfirmDialog` – für Delete
+
+## Empfohlene Libraries (nur wo sinnvoll)
+
+
+| Component         | Library                             | Hinweis                                                                                                                                                       |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DaySwipePager`   | `react-native-pager-view`           | Horizontaler Swipe, native ViewPager/UIPageViewController. Mit Expo: `npx expo install react-native-pager-view`. Web kann Probleme machen.                    |
+| `ProgressRing`    | `react-native-svg`                  | Ring selbst zeichnen (Kreis + `strokeDashoffset`). Optional: `react-native-circular-progress` baut darauf auf. Mit Expo: `npx expo install react-native-svg` |
+| `AddFoodFab`      | `react-native-paper`                | (bereits im Projekt) liefert `FAB`.                                                                                                    |
+| `ConfirmDialog`   | `react-native-paper`                | (bereits im Projekt) liefert `Dialog` für Bestätigungen.                                                                                                    |
+| `MonthlyCalendar` | `react-native-calendars`            | Monatsansicht, `markedDates` für grün/gelb/rot, custom day styling.                                                                                           |
+| `DayDetailDrawer` | `@gorhom/react-native-bottom-sheet` | Performanter Bottom-Sheet für Tagesdetails, gut mit Gesture Handler/Reanimated.                                                                               |
+
+
+Alle anderen Components (Listen, Rows, Forms, EmptyState, etc.) mit Standard-React-Native + **react-native-paper** umsetzbar; keine Extra-Library nötig.
 
 ## Hilfsfunktionen / Utilities
 
