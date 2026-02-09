@@ -10,7 +10,7 @@
 
 ### App / global
 
-- [ ] `AppShell` – Root-Layout, Tabs/Navigation
+- [x] `AppShell` – Root-Layout, Tabs/Navigation
 - [x] `Button` – wiederverwendbare Button-Component (Primary, Secondary, Text etc.)
 - [x] `Input` – wiederverwendbares Text-/Zahlen-Eingabefeld (mit Label, Placeholder, optionaler Validierung)
 - [ ] `FoodRow` – eine Zeile pro Lebensmittel (Name, Menge, Nährwerte, favorite Icon); wird auf Home, Add-Food-Modal und Food Database genutzt
