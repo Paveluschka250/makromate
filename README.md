@@ -11,8 +11,8 @@
 ### App / global
 
 - [ ] `AppShell` – Root-Layout, Tabs/Navigation
-- [ ] `Button` – wiederverwendbare Button-Component (Primary, Secondary, Text etc.)
-- [ ] `Input` – wiederverwendbares Text-/Zahlen-Eingabefeld (mit Label, Placeholder, optionaler Validierung)
+- [x] `Button` – wiederverwendbare Button-Component (Primary, Secondary, Text etc.)
+- [x] `Input` – wiederverwendbares Text-/Zahlen-Eingabefeld (mit Label, Placeholder, optionaler Validierung)
 - [ ] `FoodRow` – eine Zeile pro Lebensmittel (Name, Menge, Nährwerte, favorite Icon); wird auf Home, Add-Food-Modal und Food Database genutzt
 - [ ] `ConfirmDialog` – für Delete
 
@@ -47,16 +47,14 @@
 
 ## Empfohlene Libraries (nur wo sinnvoll)
 
-
-| Component         | Library                             | Hinweis                                                                                                                                                       |
-| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DaySwipePager`   | `react-native-pager-view`           | Horizontaler Swipe, native ViewPager/UIPageViewController. Mit Expo: `npx expo install react-native-pager-view`. Web kann Probleme machen.                    |
+| Component         | Library                             | Hinweis                                                                                                                                                      |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `DaySwipePager`   | `react-native-pager-view`           | Horizontaler Swipe, native ViewPager/UIPageViewController. Mit Expo: `npx expo install react-native-pager-view`. Web kann Probleme machen.                   |
 | `ProgressRing`    | `react-native-svg`                  | Ring selbst zeichnen (Kreis + `strokeDashoffset`). Optional: `react-native-circular-progress` baut darauf auf. Mit Expo: `npx expo install react-native-svg` |
-| `AddFoodFab`      | `react-native-paper`                | (bereits im Projekt) liefert `FAB`.                                                                                                    |
-| `ConfirmDialog`   | `react-native-paper`                | (bereits im Projekt) liefert `Dialog` für Bestätigungen.                                                                                                    |
-| `MonthlyCalendar` | `react-native-calendars`            | Monatsansicht, `markedDates` für grün/gelb/rot, custom day styling.                                                                                           |
-| `DayDetailDrawer` | `@gorhom/react-native-bottom-sheet` | Performanter Bottom-Sheet für Tagesdetails, gut mit Gesture Handler/Reanimated.                                                                               |
-
+| `AddFoodFab`      | `react-native-paper`                | (bereits im Projekt) liefert `FAB`.                                                                                                                          |
+| `ConfirmDialog`   | `react-native-paper`                | (bereits im Projekt) liefert `Dialog` für Bestätigungen.                                                                                                     |
+| `MonthlyCalendar` | `react-native-calendars`            | Monatsansicht, `markedDates` für grün/gelb/rot, custom day styling.                                                                                          |
+| `DayDetailDrawer` | `@gorhom/react-native-bottom-sheet` | Performanter Bottom-Sheet für Tagesdetails, gut mit Gesture Handler/Reanimated.                                                                              |
 
 Alle anderen Components (Listen, Rows, Forms, EmptyState, etc.) mit Standard-React-Native + **react-native-paper** umsetzbar; keine Extra-Library nötig.
 
@@ -79,4 +77,3 @@ Alle anderen Components (Listen, Rows, Forms, EmptyState, etc.) mit Standard-Rea
 - [ ] `updateEntryAmount(entryId, grams)`
 - [ ] `roundToStep(value, step)` – z.B. 5g Schritte
 - [ ] `normalizeFoodInput(form)` – Zahlen/NaN/Minwerte
-
