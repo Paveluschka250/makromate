@@ -3,7 +3,7 @@ import IconButton from "@/components/button/icon-button";
 import Input from "@/components/input/input";
 import { useState } from "react";
 import { View } from "react-native";
-import { styles } from "../apphelpers/index/index.style";
+import { styles } from "@/apphelpers/index/index.style";
 
 export default function Index() {
   const [name, setName] = useState("");
