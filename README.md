@@ -1,5 +1,6 @@
 ## Screens
 
+- [x] `LoginScreen`
 - [ ] `HomeScreen`
 - [ ] `Add Food (Modal)` – eigener Screen/Flow zum Hinzufügen von Lebensmitteln
 - [ ] `CalendarScreen`

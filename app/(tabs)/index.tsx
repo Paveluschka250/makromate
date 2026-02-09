@@ -1,9 +1,9 @@
+import { styles } from "@/apphelpers/index/index.style";
 import Button from "@/components/button/button";
 import IconButton from "@/components/button/icon-button";
 import Input from "@/components/input/input";
 import { useState } from "react";
 import { View } from "react-native";
-import { styles } from "@/apphelpers/index/index.style";
 
 export default function Index() {
   const [name, setName] = useState("");
@@ -15,14 +15,14 @@ export default function Index() {
       <Input
         label="Name"
         placeholder="Dein Name"
-        leftIcon="account"
+        leftIcon="user"
         value={name}
         onChangeText={setName}
       />
       <Input
         label="E-Mail"
         placeholder="name@mail.de"
-        leftIcon="email"
+        leftIcon="mail"
         value={email}
         onChangeText={setEmail}
       />
@@ -41,9 +41,9 @@ export default function Index() {
       <Button label="Logout" variant="danger" />
       <View style={styles.iconRow}>
         <IconButton icon="plus" variant="primary" />
-        <IconButton icon="leaf" variant="secondary" />
-        <IconButton icon="information" variant="outline" />
-        <IconButton icon="logout" variant="danger" />
+        <IconButton icon="heart" variant="secondary" />
+        <IconButton icon="info" variant="outline" />
+        <IconButton icon="log-out" variant="danger" />
       </View>
     </View>
   );

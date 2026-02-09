@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { IconButton as PaperIconButton } from "react-native-paper";
 import styles, { iconButtonColors } from "./icon-button.style";
@@ -34,7 +35,9 @@ const IconButton = ({
 
   return (
     <PaperIconButton
-      icon={icon}
+      icon={({ size, color }) => (
+        <Feather name={icon} size={size} color={color} />
+      )}
       size={size}
       mode={mode}
       containerColor={containerColor}

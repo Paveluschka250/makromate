@@ -1,7 +1,9 @@
+import { Feather } from "@expo/vector-icons";
+
 export type IconButtonVariant = "primary" | "secondary" | "outline" | "danger";
 
 export type IconButtonProps = {
-  icon: string;
+  icon?: React.ComponentProps<typeof Feather>["name"];
   onPress?: () => void;
   variant?: IconButtonVariant;
   size?: number;
