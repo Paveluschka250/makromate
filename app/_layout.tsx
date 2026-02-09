@@ -1,9 +1,20 @@
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { Stack } from "expo-router";
+import { ActivityIndicator, View } from "react-native";
 
-export default function RootLayout() {
+function RootNavigator() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#102116" }}>
+        <ActivityIndicator size="large" color="#22c55e" />
+      </View>
+    );
+  }
+
   return (
     <Stack
-      initialRouteName="login"
       screenOptions={{
         contentStyle: { backgroundColor: "#102116" },
         headerStyle: { backgroundColor: "#102116" },
@@ -11,16 +22,28 @@ export default function RootLayout() {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="register"
-        options={{ title: "Registrieren", headerBackTitle: "Zurück" }}
-      />
-      <Stack.Screen
-        name="forgot-password"
-        options={{ title: "Passwort vergessen", headerBackTitle: "Zurück" }}
-      />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Protected guard={!!user}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!user}>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="register"
+          options={{ title: "Registrieren", headerBackTitle: "Zurück" }}
+        />
+        <Stack.Screen
+          name="forgot-password"
+          options={{ title: "Passwort vergessen", headerBackTitle: "Zurück" }}
+        />
+      </Stack.Protected>
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootNavigator />
+    </AuthProvider>
   );
 }

@@ -1,6 +1,7 @@
 import { styles } from "@/apphelpers/login/login.style";
 import Button from "@/components/button/button";
 import Input from "@/components/input/input";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -15,12 +16,28 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Login() {
   const router = useRouter();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    // TODO: echte Auth-Anbindung
-    router.replace("/(tabs)" as never);
+  const handleLogin = async () => {
+    setError(null);
+    if (!email.trim() || !password) {
+      setError("Bitte E-Mail und Passwort eingeben.");
+      return;
+    }
+    setLoading(true);
+    const { error: signInError } = await signIn(email.trim(), password);
+    setLoading(false);
+    if (signInError) {
+      const message =
+        signInError.message === "Invalid login credentials"
+          ? "Ungültige E-Mail oder Passwort."
+          : signInError.message;
+      setError(message);
+    }
   };
 
   return (
@@ -47,18 +64,30 @@ export default function Login() {
                 placeholder="name@beispiel.de"
                 leftIcon="mail"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  setError(null);
+                }}
               />
               <Input
                 label="Passwort"
                 placeholder="••••••••"
                 leftIcon="lock"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setError(null);
+                }}
                 secureTextEntry
               />
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
               <View style={styles.submitButton}>
-                <Button label="Anmelden" variant="primary" onPress={handleLogin} />
+                <Button
+                  label={loading ? "Wird angemeldet…" : "Anmelden"}
+                  variant="primary"
+                  onPress={handleLogin}
+                  disabled={loading}
+                />
               </View>
             </View>
 

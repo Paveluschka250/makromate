@@ -47,4 +47,9 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: "#7f9d8c",
   },
+  errorText: {
+    fontSize: 14,
+    color: "#ef4444",
+    marginTop: 4,
+  },
 });

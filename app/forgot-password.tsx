@@ -1,5 +1,6 @@
 import Button from "@/components/button/button";
 import Input from "@/components/input/input";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -14,11 +15,26 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ForgotPassword() {
   const router = useRouter();
+  const { resetPassword } = useAuth();
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    // TODO: Passwort-Reset anbinden
-    router.back();
+  const handleSubmit = async () => {
+    setError(null);
+    if (!email.trim()) {
+      setError("Bitte E-Mail eingeben.");
+      return;
+    }
+    setLoading(true);
+    const { error: resetError } = await resetPassword(email.trim());
+    setLoading(false);
+    if (resetError) {
+      setError(resetError.message);
+    } else {
+      setSuccess(true);
+    }
   };
 
   return (
@@ -41,10 +57,26 @@ export default function ForgotPassword() {
               placeholder="name@beispiel.de"
               leftIcon="mail"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(text) => {
+                setEmail(text);
+                setError(null);
+                setSuccess(false);
+              }}
+              disabled={success}
             />
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            {success ? (
+              <Text style={styles.successText}>
+                Falls ein Konto existiert, wurde ein Link zum Zurücksetzen an diese E-Mail gesendet.
+              </Text>
+            ) : null}
             <View style={styles.actions}>
-              <Button label="Link senden" variant="primary" onPress={handleSubmit} />
+              <Button
+                label={loading ? "Wird gesendet…" : "Link senden"}
+                variant="primary"
+                onPress={handleSubmit}
+                disabled={loading || success}
+              />
               <Button
                 label="Zurück"
                 variant="outline"
@@ -83,5 +115,15 @@ const styles = StyleSheet.create({
   actions: {
     marginTop: 16,
     gap: 12,
+  },
+  errorText: {
+    fontSize: 14,
+    color: "#ef4444",
+    marginTop: 4,
+  },
+  successText: {
+    fontSize: 14,
+    color: "#22c55e",
+    marginTop: 8,
   },
 });

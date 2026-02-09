@@ -1,5 +1,6 @@
 import Button from "@/components/button/button";
 import Input from "@/components/input/input";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -15,13 +16,31 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Register() {
   const router = useRouter();
+  const { signUp } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    // TODO: Registrierung anbinden
-    router.replace("/(tabs)" as never);
+  const handleRegister = async () => {
+    setError(null);
+    if (!email.trim() || !password) {
+      setError("Bitte E-Mail und Passwort eingeben.");
+      return;
+    }
+    if (password.length < 8) {
+      setError("Passwort muss mindestens 8 Zeichen haben.");
+      return;
+    }
+    setLoading(true);
+    const { error: signUpError } = await signUp(email.trim(), password, {
+      fullName: name.trim() || undefined,
+    });
+    setLoading(false);
+    if (signUpError) {
+      setError(signUpError.message);
+    }
   };
 
   return (
@@ -52,22 +71,32 @@ export default function Register() {
                 placeholder="name@beispiel.de"
                 leftIcon="mail"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  setError(null);
+                }}
               />
               <Input
                 label="Passwort"
                 placeholder="Mindestens 8 Zeichen"
                 leftIcon="lock"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setError(null);
+                }}
                 secureTextEntry
                 helperText="Mindestens 8 Zeichen"
               />
+              {error ? (
+                <Text style={styles.errorText}>{error}</Text>
+              ) : null}
               <View style={styles.actions}>
                 <Button
-                  label="Konto erstellen"
+                  label={loading ? "Wird erstellt…" : "Konto erstellen"}
                   variant="primary"
                   onPress={handleRegister}
+                  disabled={loading}
                 />
                 <View style={styles.loginRow}>
                   <Text style={styles.loginHint}>Bereits registriert?</Text>
@@ -126,5 +155,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#22c55e",
     fontWeight: "600",
+  },
+  errorText: {
+    fontSize: 14,
+    color: "#ef4444",
+    marginTop: 4,
   },
 });
