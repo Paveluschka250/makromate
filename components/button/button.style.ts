@@ -22,7 +22,6 @@ export const buttonColors = {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 999,
-    marginVertical: 6,
   },
   content: {
     paddingHorizontal: 18,

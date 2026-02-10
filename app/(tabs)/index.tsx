@@ -3,7 +3,7 @@ import Button from "@/components/button/button";
 import IconButton from "@/components/button/icon-button";
 import Input from "@/components/input/input";
 import { useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 export default function Index() {
   const [name, setName] = useState("");
@@ -11,7 +11,11 @@ export default function Index() {
   const [password, setPassword] = useState("");
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
       <Input
         label="Name"
         placeholder="Dein Name"
@@ -52,6 +56,6 @@ export default function Index() {
         <IconButton icon="info" variant="outline" />
         <IconButton icon="log-out" variant="danger" />
       </View>
-    </View>
+    </ScrollView>
   );
 }
