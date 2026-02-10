@@ -21,6 +21,7 @@ export type Profile = {
   weight_kg: number | null;
   gender: ProfileGender | null;
   goal: ProfileGoal | null;
+  avatar_url: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -34,7 +35,9 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Update: Partial<Omit<Profile, "id" | "created_at">> & { updated_at?: string };
+        Update: Partial<Omit<Profile, "id" | "created_at">> & {
+          updated_at?: string;
+        };
       };
     };
     Views: Record<string, never>;
