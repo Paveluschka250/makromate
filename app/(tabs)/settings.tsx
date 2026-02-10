@@ -43,6 +43,17 @@ export default function Settings() {
     const asset = result.assets[0];
     try {
       setUploading(true);
+      // 1) Altes Profilbild aus Storage löschen (falls vorhanden)
+      if (profile?.avatar_url) {
+        const url = profile.avatar_url;
+        const parts = url.split("/avatars/");
+        const oldPath = parts.length === 2 ? parts[1] : null;
+        if (oldPath) {
+          await supabase.storage.from("avatars").remove([oldPath]);
+        }
+      }
+
+      // 2) Neues Bild vorbereiten und hochladen
       const fileExt = asset.uri.split(".").pop() ?? "jpg";
       const fileName = `${user.id}-${Date.now()}.${fileExt}`;
       const filePath = `${user.id}/${fileName}`;
