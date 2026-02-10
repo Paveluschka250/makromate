@@ -3,9 +3,11 @@ import { Stack } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 
 function RootNavigator() {
-  const { user, loading, profileLoading, isProfileComplete } = useAuth();
+  const { user, loading, profile, profileLoading, isProfileComplete } = useAuth();
 
-  if (loading || (user && profileLoading)) {
+  // Nur beim initialen Laden von Auth/Profil den Vollbild-Spinner zeigen.
+  // Spätere Profil-Updates (z.B. Avatar ändern) blockieren den Screen nicht mehr.
+  if (loading || (user && profileLoading && !profile)) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#102116" }}>
         <ActivityIndicator size="large" color="#22c55e" />

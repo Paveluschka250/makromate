@@ -1,6 +1,8 @@
 import Button from "@/components/button/button";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { decode } from "base64-arraybuffer";
+import * as FileSystem from "expo-file-system/legacy";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -24,7 +26,6 @@ export default function Settings() {
 
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      // Optional: Hinweis anzeigen
       return;
     }
 
@@ -35,7 +36,9 @@ export default function Settings() {
       quality: 0.8,
     });
 
-    if (result.canceled || !result.assets?.length) return;
+    if (result.canceled || !result.assets?.length) {
+      return;
+    }
 
     const asset = result.assets[0];
     try {
@@ -44,35 +47,42 @@ export default function Settings() {
       const fileName = `${user.id}-${Date.now()}.${fileExt}`;
       const filePath = `${user.id}/${fileName}`;
 
-      const response = await fetch(asset.uri);
-      const blob = await response.blob();
+      // Bild als Base64 lesen und in ArrayBuffer konvertieren (RN-kompatibel)
+      const base64 = await FileSystem.readAsStringAsync(asset.uri, {
+        encoding: "base64",
+      });
+      const fileData = decode(base64);
 
       const { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(filePath, blob, { upsert: true });
+        .upload(filePath, fileData, {
+          upsert: true,
+          contentType: asset.mimeType ?? "image/jpeg",
+        });
 
       if (uploadError) {
-        // Optional: Fehler anzeigen
-        console.error(uploadError);
         return;
       }
 
       const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
 
       const publicUrl = data.publicUrl;
-      await updateProfile({ avatar_url: publicUrl });
+      const { error: updateError } = await updateProfile({
+        avatar_url: publicUrl,
+      });
+      if (updateError) {
+        // optional: hier könntest du später selbst Logging/Fehlerhandling ergänzen
+      }
     } catch (e) {
-      console.error(e);
+      // optional: hier könntest du später selbst Logging/Fehlerhandling ergänzen
     } finally {
       setUploading(false);
     }
   };
 
   const avatarInitial = (() => {
-    const first =
-      profile?.first_name?.trim()?.[0]?.toUpperCase() ?? null;
-    const last =
-      profile?.last_name?.trim()?.[0]?.toUpperCase() ?? null;
+    const first = profile?.first_name?.trim()?.[0]?.toUpperCase() ?? null;
+    const last = profile?.last_name?.trim()?.[0]?.toUpperCase() ?? null;
     if (first && last) return `${first}${last}`;
     if (first) return first;
     if (last) return last;

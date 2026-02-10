@@ -26,7 +26,7 @@ export default function EditProfile() {
               gender: data.gender,
               goal: data.goal,
             });
-            if (!result.error) router.replace("/(tabs)/settings" as never);
+            if (!result.error) router.back();
             return result;
           }}
           submitLabel="Speichern"
