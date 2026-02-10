@@ -22,6 +22,7 @@ const Input = ({
   error = false,
   disabled = false,
   secureTextEntry = false,
+  editable = true,
 }: InputProps) => {
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 
@@ -50,6 +51,7 @@ const Input = ({
         outlineStyle={styles.outline}
         contentStyle={styles.content}
         disabled={disabled}
+        editable={editable}
         secureTextEntry={isSecure}
         error={error}
         left={leftIcon ? <TextInput.Icon icon={renderFeather(leftIcon as FeatherIconName)} /> : undefined}
