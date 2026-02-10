@@ -78,3 +78,8 @@ Alle anderen Components (Listen, Rows, Forms, EmptyState, etc.) mit Standard-Rea
 - [ ] `updateEntryAmount(entryId, grams)`
 - [ ] `roundToStep(value, step)` – z.B. 5g Schritte
 - [ ] `normalizeFoodInput(form)` – Zahlen/NaN/Minwerte
+
+## Ideen
+
+- [ ] `eigene theme.json` → so werden globale styles immer gleich bleiben in der ganzen App
+- [ ] `deleteProfile` → ein Button in `ProfileSettingsScreen` um das Konto zu löschen
