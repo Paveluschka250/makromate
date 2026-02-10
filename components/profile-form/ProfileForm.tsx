@@ -1,43 +1,30 @@
 import Button from "@/components/button/button";
 import Input from "@/components/input/input";
-import type { Profile, ProfileGender, ProfileGoal } from "@/lib/supabase.types";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
 import {
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import {
+  birthDateToDate,
+  dateToBirthDateString,
   formatBirthDateForInput,
   parseBirthDate,
 } from "./profile-form.utils";
+import styles from "./profile-form.style";
+import {
+  type ProfileFormProps,
+  type ProfileGender,
+  type ProfileGoal,
+  GENDER_OPTIONS,
+  GOAL_OPTIONS,
+} from "./profile-form.types";
 
-const GENDER_OPTIONS: { value: ProfileGender; label: string }[] = [
-  { value: "male", label: "Männlich" },
-  { value: "female", label: "Weiblich" },
-  { value: "diverse", label: "Divers" },
-  { value: "other", label: "Sonstige" },
-];
-
-const GOAL_OPTIONS: { value: ProfileGoal; label: string }[] = [
-  { value: "lose_weight", label: "Abnehmen" },
-  { value: "gain_weight", label: "Zunehmen" },
-  { value: "maintain", label: "Gewicht halten" },
-];
-
-export type ProfileFormData = {
-  first_name: string;
-  last_name: string;
-  birth_date: string;
-  height_cm: number;
-  weight_kg: number;
-  gender: ProfileGender;
-  goal: ProfileGoal;
-};
-
-export type ProfileFormProps = {
-  initialProfile: Profile | null;
-  onSubmit: (data: ProfileFormData) => Promise<{ error: Error | null }>;
-  submitLabel: string;
-  title?: string;
-  subtitle?: string;
-};
+export type { ProfileFormData, ProfileFormProps } from "./profile-form.types";
 
 export default function ProfileForm({
   initialProfile,
@@ -55,6 +42,13 @@ export default function ProfileForm({
   const [goal, setGoal] = useState<ProfileGoal | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  useEffect(() => {
+    if (showDatePicker) {
+      console.log("[ProfileForm] DateTimePicker gestartet");
+    }
+  }, [showDatePicker]);
 
   useEffect(() => {
     if (!initialProfile) return;
@@ -137,7 +131,6 @@ export default function ProfileForm({
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
 
       <View style={styles.form}>
@@ -161,16 +154,50 @@ export default function ProfileForm({
             setError(null);
           }}
         />
-        <Input
-          label="Geburtstag"
-          placeholder="TT.MM.JJJJ (z.B. 15.03.1990)"
-          leftIcon="calendar"
-          value={birthDateInput}
-          onChangeText={(t) => {
-            setBirthDateInput(t);
-            setError(null);
+        <Pressable
+          onPress={() => {
+            console.log("[ProfileForm] Geburtstag-Input geklickt");
+            setShowDatePicker(true);
           }}
-        />
+        >
+          <View pointerEvents="none">
+            <Input
+              label="Geburtstag"
+              placeholder="TT.MM.JJJJ (z.B. 15.03.1990)"
+              leftIcon="calendar"
+              value={birthDateInput}
+              editable={false}
+            />
+          </View>
+        </Pressable>
+        {showDatePicker && (
+          <>
+            <DateTimePicker
+              value={birthDateToDate(birthDateInput)}
+              mode="date"
+              display={Platform.OS === "ios" ? "spinner" : "default"}
+              maximumDate={new Date()}
+              onChange={(_, selectedDate) => {
+                if (Platform.OS === "android") setShowDatePicker(false);
+                if (selectedDate) {
+                  setBirthDateInput(
+                    formatBirthDateForInput(dateToBirthDateString(selectedDate))
+                  );
+                  setError(null);
+                }
+              }}
+            />
+            {Platform.OS === "ios" && (
+              <View style={styles.datePickerActions}>
+                <Button
+                  label="Fertig"
+                  variant="primary"
+                  onPress={() => setShowDatePicker(false)}
+                />
+              </View>
+            )}
+          </>
+        )}
         <Input
           label="Größe (cm)"
           placeholder="175"
@@ -237,45 +264,3 @@ export default function ProfileForm({
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#dcfce7",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#7f9d8c",
-    marginBottom: 32,
-  },
-  form: {
-    gap: 16,
-  },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#7f9d8c",
-    marginBottom: 4,
-  },
-  chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-  errorText: {
-    fontSize: 14,
-    color: "#ef4444",
-    marginTop: 4,
-  },
-  submitButton: {
-    marginTop: 16,
-  },
-});

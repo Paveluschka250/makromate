@@ -19,3 +19,18 @@ export function formatBirthDateForInput(birthDate: string | null): string {
   if (!y || !m || !d) return "";
   return `${d.padStart(2, "0")}.${m.padStart(2, "0")}.${y}`;
 }
+
+/** Date → DB-Format YYYY-MM-DD (für Date Picker → Form) */
+export function dateToBirthDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+/** Geburtstags-String (TT.MM.JJJJ) → Date für Picker (Mittag UTC, keine TZ-Probleme) */
+export function birthDateToDate(birthDate: string | null): Date {
+  const iso = parseBirthDate(birthDate ?? "");
+  if (!iso) return new Date(1990, 0, 1);
+  return new Date(iso + "T12:00:00");
+}
