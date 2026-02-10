@@ -39,6 +39,13 @@ export default function Index() {
       <Button label="Mehr" variant="secondary" />
       <Button label="Details" variant="outline" />
       <Button label="Logout" variant="danger" />
+      <Button label="Männlich" variant="chip" active={true} />
+      <Button label="Weiblich" variant="chip" active={false} />
+      <Button label="Divers" variant="chip" active={false} />
+      <Button label="Sonstige" variant="chip" active={false} />
+      <Button label="Abnehmen" variant="chip" active={false} />
+      <Button label="Zunehmen" variant="chip" active={false} />
+      <Button label="Gewicht halten" variant="chip" active={false} />
       <View style={styles.iconRow}>
         <IconButton icon="plus" variant="primary" />
         <IconButton icon="heart" variant="secondary" />

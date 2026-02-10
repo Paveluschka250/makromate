@@ -1,10 +1,12 @@
 import Button from "@/components/button/button";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Settings() {
+  const router = useRouter();
   const { user, signOut } = useAuth();
 
   return (
@@ -15,6 +17,11 @@ export default function Settings() {
           <Text style={styles.email}>{user.email}</Text>
         ) : null}
         <View style={styles.actions}>
+          <Button
+            label="Profil bearbeiten"
+            variant="outline"
+            onPress={() => router.push("/edit-profile")}
+          />
           <Button
             label="Abmelden"
             variant="outline"
@@ -49,5 +56,6 @@ const styles = StyleSheet.create({
   },
   actions: {
     marginTop: 8,
+    gap: 12,
   },
 });

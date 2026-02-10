@@ -8,37 +8,59 @@ const Button = ({
   onPress,
   variant = "primary",
   disabled = false,
+  active = false,
 }: ButtonProps) => {
-  const mode = variant === "outline" ? "outlined" : "contained";
+  const isChip = variant === "chip";
 
-  const variantButtonStyle = {
-    primary: styles.primaryButton,
-    secondary: styles.secondaryButton,
-    outline: styles.outlineButton,
-    danger: styles.dangerButton,
-  }[variant];
+  const mode =
+    variant === "outline"
+      ? "outlined"
+      : "contained";
 
-  const variantLabelStyle = {
-    primary: styles.primaryLabel,
-    secondary: styles.secondaryLabel,
-    outline: styles.outlineLabel,
-    danger: styles.dangerLabel,
-  }[variant];
+  const variantButtonStyle = isChip
+    ? [
+        styles.chipButton,
+        active && styles.chipButtonActive,
+      ]
+    : {
+        primary: styles.primaryButton,
+        secondary: styles.secondaryButton,
+        outline: styles.outlineButton,
+        danger: styles.dangerButton,
+      }[variant];
+
+  const variantLabelStyle = isChip
+    ? [
+        styles.chipLabel,
+        active && styles.chipLabelActive,
+      ]
+    : {
+        primary: styles.primaryLabel,
+        secondary: styles.secondaryLabel,
+        outline: styles.outlineLabel,
+        danger: styles.dangerLabel,
+      }[variant];
 
   const buttonColor =
-    variant === "primary"
-      ? buttonColors.primaryBg
-      : variant === "secondary"
-        ? buttonColors.secondaryBg
-        : variant === "danger"
-          ? buttonColors.dangerBg
-          : undefined;
+    isChip
+      ? undefined
+      : variant === "primary"
+        ? buttonColors.primaryBg
+        : variant === "secondary"
+          ? buttonColors.secondaryBg
+          : variant === "danger"
+            ? buttonColors.dangerBg
+            : undefined;
 
   return (
     <PaperButton
       mode={mode}
       buttonColor={buttonColor}
-      style={[styles.button, styles.shadow, variantButtonStyle]}
+      style={[
+        styles.button,
+        !isChip && styles.shadow,
+        variantButtonStyle,
+      ]}
       contentStyle={styles.content}
       labelStyle={[styles.label, variantLabelStyle]}
       onPress={onPress}
