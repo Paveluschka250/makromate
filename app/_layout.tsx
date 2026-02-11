@@ -1,16 +1,15 @@
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { colors } from "@/lib/theme";
 import { Stack } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 
 function RootNavigator() {
   const { user, loading, profile, profileLoading, isProfileComplete } = useAuth();
 
-  // Nur beim initialen Laden von Auth/Profil den Vollbild-Spinner zeigen.
-  // Spätere Profil-Updates (z.B. Avatar ändern) blockieren den Screen nicht mehr.
   if (loading || (user && profileLoading && !profile)) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#102116" }}>
-        <ActivityIndicator size="large" color="#22c55e" />
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.background }}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -18,9 +17,9 @@ function RootNavigator() {
   return (
     <Stack
       screenOptions={{
-        contentStyle: { backgroundColor: "#102116" },
-        headerStyle: { backgroundColor: "#102116" },
-        headerTintColor: "#dcfce7",
+        contentStyle: { backgroundColor: colors.background },
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.text,
         headerShadowVisible: false,
       }}
     >

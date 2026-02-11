@@ -1,5 +1,6 @@
 import type { ProfileHeaderProps } from "@/apphelpers/settings/settings.types";
 import styles from "@/apphelpers/settings/settings.style";
+import { colors } from "@/lib/theme";
 import React from "react";
 import {
   ActivityIndicator,
@@ -57,7 +58,7 @@ export default function ProfileHeader({
         )}
         {uploading && (
           <View style={styles.avatarOverlay}>
-            <ActivityIndicator size="small" color="#22c55e" />
+            <ActivityIndicator size="small" color={colors.primary} />
           </View>
         )}
       </TouchableOpacity>

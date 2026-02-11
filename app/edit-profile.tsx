@@ -1,5 +1,6 @@
 import ProfileForm from "@/components/profile-form/ProfileForm";
 import { useAuth } from "@/context/AuthContext";
+import { colors } from "@/lib/theme";
 import { useRouter } from "expo-router";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,7 +10,7 @@ export default function EditProfile() {
   const { profile, updateProfile } = useAuth();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#102116" }} edges={["bottom"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={["bottom"]}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -30,7 +31,7 @@ export default function EditProfile() {
             return result;
           }}
           submitLabel="Speichern"
-          title="Profil bearbeiten"
+          title=""
           subtitle="Passe deine Daten an."
         />
       </KeyboardAvoidingView>

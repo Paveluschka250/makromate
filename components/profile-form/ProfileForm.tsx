@@ -9,12 +9,6 @@ import {
   Text,
   View,
 } from "react-native";
-import {
-  birthDateToDate,
-  dateToBirthDateString,
-  formatBirthDateForInput,
-  parseBirthDate,
-} from "./profile-form.utils";
 import styles from "./profile-form.style";
 import {
   type ProfileFormProps,
@@ -23,6 +17,12 @@ import {
   GENDER_OPTIONS,
   GOAL_OPTIONS,
 } from "./profile-form.types";
+import {
+  birthDateToDate,
+  dateToBirthDateString,
+  formatBirthDateForInput,
+  parseBirthDate,
+} from "./profile-form.utils";
 
 export type { ProfileFormData, ProfileFormProps } from "./profile-form.types";
 
@@ -30,8 +30,8 @@ export default function ProfileForm({
   initialProfile,
   onSubmit,
   submitLabel,
-  title = "Profil",
-  subtitle = "Gib deine Daten ein.",
+  title = "",
+  subtitle = "",
 }: ProfileFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -131,7 +131,14 @@ export default function ProfileForm({
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <View style={styles.header}>
+        {title && (
+          <Text style={styles.title}>{title}</Text>
+        )}
+        {subtitle && (
+          <Text style={styles.subtitle}>{subtitle}</Text>
+        )}
+      </View>
 
       <View style={styles.form}>
         <Input

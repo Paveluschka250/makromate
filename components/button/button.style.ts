@@ -1,35 +1,36 @@
+import { borderRadius, borderWidth, colors, spacing, typography } from "@/lib/theme";
 import { StyleSheet } from "react-native";
 
 export const buttonColors = {
-  primaryBg: "#13ec49",
-  primaryText: "#102116",
-  secondaryBg: "#14532d",
-  secondaryText: "#dcfce7",
-  chipBg: "#0b1a12",
-  chipBorder: "#2d4a3a",
-  chipText: "#7f9d8c",
-  chipActiveBg: "rgba(34, 197, 94, 0.15)",
-  chipActiveBorder: "#22c55e",
-  chipActiveText: "#22c55e",
-  outlineBorder: "#13ec49",
-  outlineText: "#13ec49",
-  dangerBg: "#f87171",
-  dangerText: "#450a0a",
-  shadow: "#000000",
-  shadowOpacity: 0.35,
+  primaryBg: colors.primary,
+  primaryText: colors.textOnPrimary,
+  secondaryBg: colors.surfaceElevated,
+  secondaryText: colors.text,
+  chipBg: colors.backgroundSecondary,
+  chipBorder: colors.chipBorder,
+  chipText: colors.textMuted,
+  chipActiveBg: colors.primaryAlpha15,
+  chipActiveBorder: colors.primary,
+  chipActiveText: colors.primary,
+  outlineBorder: colors.primary,
+  outlineText: colors.primary,
+  dangerBg: colors.danger,
+  dangerText: colors.textOnDanger,
+  shadow: colors.shadow,
+  shadowOpacity: colors.shadowOpacity,
 };
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 999,
+    borderRadius: borderRadius.full,
   },
   content: {
     paddingHorizontal: 18,
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.semibold,
     letterSpacing: 0.3,
   },
   shadow: {
@@ -58,17 +59,15 @@ const styles = StyleSheet.create({
     color: buttonColors.dangerText,
   },
   outlineButton: {
-    borderWidth: 1.5,
+    borderWidth: borderWidth.default,
     borderColor: buttonColors.outlineBorder,
   },
   outlineLabel: {
     color: buttonColors.outlineText,
   },
   chipButton: {
-    marginVertical: 0,
-    marginRight: 8,
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: borderRadius.sm,
+    borderWidth: borderWidth.default,
     borderColor: buttonColors.chipBorder,
     backgroundColor: buttonColors.chipBg,
   },
@@ -77,8 +76,8 @@ const styles = StyleSheet.create({
     backgroundColor: buttonColors.chipActiveBg,
   },
   chipLabel: {
-    fontSize: 15,
-    fontWeight: "500",
+    fontSize: typography.fontSize.base,
+    fontWeight: typography.fontWeight.medium,
     color: buttonColors.chipText,
   },
   chipLabelActive: {

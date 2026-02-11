@@ -1,31 +1,32 @@
+import { borderRadius, borderWidth, colors, spacing } from "@/lib/theme";
 import { StyleSheet } from "react-native";
 
 export const iconButtonColors = {
-  primaryBg: "#13ec49",
-  primaryIcon: "#052e16",
-  secondaryBg: "#14532d",
-  secondaryIcon: "#86efac",
-  outlineBorder: "#13ec49",
-  outlineIcon: "#13ec49",
-  dangerBg: "#f87171",
-  dangerIcon: "#450a0a",
+  primaryBg: colors.primary,
+  primaryIcon: colors.textOnPrimary,
+  secondaryBg: colors.surfaceElevated,
+  secondaryIcon: colors.primary,
+  outlineBorder: colors.primary,
+  outlineIcon: colors.primary,
+  dangerBg: colors.danger,
+  dangerIcon: colors.textOnDanger,
 };
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 999,
-    marginVertical: 6,
-    marginHorizontal: 4,
+    borderRadius: borderRadius.full,
+    marginVertical: spacing.xs + 2,
+    marginHorizontal: spacing.xs,
   },
   glow: {
-    shadowColor: "#13ec49",
+    shadowColor: colors.glowPrimary,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.6,
     shadowRadius: 18,
     elevation: 8,
   },
   outlined: {
-    borderWidth: 1.5,
+    borderWidth: borderWidth.default,
     borderColor: iconButtonColors.outlineBorder,
   },
 });

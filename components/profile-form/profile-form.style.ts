@@ -1,40 +1,49 @@
+import { colors, spacing, typography } from "@/lib/theme";
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 24,
+    paddingHorizontal: spacing.screenPaddingHorizontal,
+    paddingTop: spacing.sectionGap,
+    paddingBottom: spacing.screenPaddingBottom,
+    gap: spacing.sectionGap,
+  },
+  header: {
+    gap: spacing.formGap,
+  },
+  title: {
+    fontSize: typography.fontSize.xxl,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#7f9d8c",
-    marginBottom: 32,
+    fontSize: typography.fontSize.md,
+    color: colors.textMuted,
   },
   form: {
-    gap: 16,
+    gap: spacing.formGap,
   },
   fieldLabel: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#7f9d8c",
-    marginBottom: 4,
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semibold,
+    color: colors.textMuted,
+    marginBottom: spacing.xs,
   },
   chipRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    gap: spacing.formFieldGap,
   },
   errorText: {
-    fontSize: 14,
-    color: "#ef4444",
-    marginTop: 4,
+    fontSize: typography.fontSize.sm,
+    color: colors.error,
+    marginTop: spacing.xs,
   },
   submitButton: {
-    marginTop: 16,
+    marginTop: spacing.lg,
   },
   datePickerActions: {
-    marginTop: 12,
+    marginTop: spacing.md,
   },
 });

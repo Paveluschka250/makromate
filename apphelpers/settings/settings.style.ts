@@ -1,44 +1,45 @@
+import { colors, borderRadius, spacing, typography } from "@/lib/theme";
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#102116",
+    backgroundColor: colors.background,
   },
   inner: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    gap: 32,
+    paddingHorizontal: spacing.screenPaddingHorizontal,
+    paddingTop: spacing.screenPaddingTop,
+    gap: spacing.sectionGap,
   },
   headerRow: {
-    backgroundColor: "#14532d",
+    backgroundColor: colors.surfaceElevated,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 28,
-    paddingVertical: 16,
-    borderRadius: 999,
+    paddingHorizontal: spacing.xl + 4,
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.full,
   },
   headerText: {
     flexShrink: 1,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#dcfce7",
+    fontSize: typography.fontSize.xxl,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text,
   },
   email: {
-    fontSize: 15,
-    color: "#7f9d8c",
+    fontSize: typography.fontSize.base,
+    color: colors.textMuted,
   },
   avatarWrapper: {
     width: 56,
     height: 56,
-    borderRadius: 999,
+    borderRadius: borderRadius.full,
     overflow: "hidden",
     borderWidth: 2,
-    borderColor: "#22c55e",
+    borderColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -53,17 +54,17 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   avatarInitial: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#22c55e",
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.primary,
   },
   avatarOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: colors.overlay,
     justifyContent: "center",
     alignItems: "center",
   },
   actions: {
-    gap: 12,
+    gap: spacing.buttonGap,
   },
 });

@@ -1,34 +1,34 @@
+import { borderRadius, borderWidth, colors, spacing } from "@/lib/theme";
 import { StyleSheet } from "react-native";
 
 export const inputColors = {
-  background: "#1b2b22",
-  text: "#d9f3e2",
-  placeholder: "#7f9d8c",
-  outline: "#22342a",
-  outlineActive: "#22c55e",
-  error: "#f87171",
+  background: colors.surface,
+  text: colors.text,
+  placeholder: colors.textMuted,
+  outline: colors.outline,
+  outlineActive: colors.outlineActive,
+  error: colors.danger,
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
   },
   input: {
     backgroundColor: inputColors.background,
-    borderRadius: 999,
+    borderRadius: borderRadius.full,
     height: 52,
-    paddingHorizontal: 6,
+    paddingHorizontal: spacing.sm,
   },
   outline: {
-    borderRadius: 999,
-    borderWidth: 1.2,
+    borderRadius: borderRadius.full,
+    borderWidth: borderWidth.default,
   },
   content: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
   },
   helper: {
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
 });
 
