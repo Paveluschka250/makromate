@@ -102,6 +102,11 @@ export default function TabsLayout() {
         headerStyle: { backgroundColor: "#102116" },
         headerTintColor: "#dcfce7",
         headerShadowVisible: false,
+        headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontSize: 26,
+          fontWeight: "700",
+        },
         tabBarStyle: {
           backgroundColor: "#0b1a12",
           borderTopWidth: 0,
