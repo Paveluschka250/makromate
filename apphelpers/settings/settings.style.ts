@@ -1,15 +1,15 @@
-import { colors, borderRadius, spacing, typography } from "@/lib/theme";
+import { borderRadius, colors, spacing, typography } from "@/lib/theme";
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+    paddingHorizontal: spacing.screenPaddingHorizontal,
+    paddingTop: spacing.screenPaddingTop,
   },
   inner: {
     flex: 1,
-    paddingHorizontal: spacing.screenPaddingHorizontal,
-    paddingTop: spacing.screenPaddingTop,
     gap: spacing.sectionGap,
   },
   headerRow: {
@@ -66,5 +66,16 @@ export default StyleSheet.create({
   },
   actions: {
     gap: spacing.buttonGap,
+  },
+  deleteSection: {
+    marginTop: spacing.lg,
+    gap: spacing.sm,
+  },
+  deleteErrorContainer: {
+    marginTop: spacing.xs,
+  },
+  deleteActions: {
+    flexDirection: "row",
+    gap: spacing.sm,
   },
 });

@@ -1,4 +1,7 @@
+import ProfileHeader from "@/apphelpers/settings/components/ProfileHeader";
+import styles from "@/apphelpers/settings/settings.style";
 import Button from "@/components/button/button";
+import Input from "@/components/input/input";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { decode } from "base64-arraybuffer";
@@ -6,15 +9,16 @@ import * as FileSystem from "expo-file-system/legacy";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import ProfileHeader from "@/apphelpers/settings/components/ProfileHeader";
-import styles from "@/apphelpers/settings/settings.style";
+import { Alert, ScrollView, View } from "react-native";
 
 export default function Settings() {
   const router = useRouter();
   const { user, profile, updateProfile, signOut } = useAuth();
   const [uploading, setUploading] = useState(false);
+  const [showDeleteForm, setShowDeleteForm] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const handlePickAvatar = async () => {
     if (!user?.id) return;
@@ -82,8 +86,88 @@ export default function Settings() {
     }
   };
 
+  const handleConfirmDelete = async () => {
+    if (!user?.email || !user?.id) return;
+
+    if (!deletePassword.trim()) {
+      setDeleteError("Bitte Passwort eingeben.");
+      return;
+    }
+
+    setDeleteError(null);
+    setDeleteLoading(true);
+
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: deletePassword,
+    });
+
+    setDeleteLoading(false);
+
+    if (authError) {
+      setDeleteError("Passwort ist falsch.");
+      return;
+    }
+
+    Alert.alert(
+      "Konto löschen",
+      "Bist du sicher, dass du dein Konto endgültig löschen möchtest? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      [
+        { text: "Abbrechen", style: "cancel" },
+        {
+          text: "Ja, Konto löschen",
+          style: "destructive",
+          onPress: () => {
+            (async () => {
+              try {
+                const { data, error } = await supabase.functions.invoke(
+                  "delete-account"
+                );
+
+                if (error) {
+                  Alert.alert(
+                    "Fehler",
+                    data?.error ?? error.message ?? "Konto konnte nicht gelöscht werden."
+                  );
+                  return;
+                }
+
+                if (data?.error) {
+                  Alert.alert("Fehler", data.error);
+                  return;
+                }
+
+                Alert.alert(
+                  "Konto gelöscht",
+                  "Dein Konto wurde erfolgreich gelöscht.",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        signOut();
+                      },
+                    },
+                  ]
+                );
+              } catch {
+                Alert.alert(
+                  "Fehler",
+                  "Dein Konto konnte nicht gelöscht werden. Bitte versuche es später erneut."
+                );
+              }
+            })();
+          },
+        },
+      ]
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.container} edges={["bottom"]}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.inner}>
         <ProfileHeader
           profile={profile}
@@ -103,8 +187,56 @@ export default function Settings() {
             variant="outline"
             onPress={() => signOut()}
           />
+          <Button
+            label="Konto löschen"
+            variant="danger"
+            onPress={() => {
+              setShowDeleteForm((prev) => !prev);
+              setDeletePassword("");
+              setDeleteError(null);
+            }}
+          />
         </View>
+
+        {showDeleteForm && (
+          <View style={styles.deleteSection}>
+            <Input
+              label="Passwort"
+              placeholder="••••••••"
+              leftIcon="lock"
+              value={deletePassword}
+              onChangeText={(t) => {
+                setDeletePassword(t);
+                setDeleteError(null);
+              }}
+              secureTextEntry
+            />
+            {deleteError ? (
+              <View style={styles.deleteErrorContainer}>
+                <Button label={deleteError} variant="outline" disabled />
+              </View>
+            ) : null}
+            <View style={styles.deleteActions}>
+              <Button
+                label={deleteLoading ? "Wird geprüft…" : "Endgültig löschen"}
+                variant="danger"
+                onPress={handleConfirmDelete}
+                disabled={deleteLoading}
+              />
+              <Button
+                label="Abbrechen"
+                variant="outline"
+                onPress={() => {
+                  setShowDeleteForm(false);
+                  setDeletePassword("");
+                  setDeleteError(null);
+                }}
+                disabled={deleteLoading}
+              />
+            </View>
+          </View>
+        )}
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
