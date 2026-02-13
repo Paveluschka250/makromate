@@ -71,11 +71,9 @@ export default StyleSheet.create({
     marginTop: spacing.lg,
     gap: spacing.sm,
   },
-  deleteErrorContainer: {
-    marginTop: spacing.xs,
-  },
   deleteActions: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: spacing.sm,
   },
 });

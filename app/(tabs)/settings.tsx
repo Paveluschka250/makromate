@@ -1,12 +1,10 @@
 import ProfileHeader from "@/apphelpers/settings/components/ProfileHeader";
+import { deleteAccount, verifyPassword } from "@/apphelpers/settings/functions/account";
+import { pickAndUploadAvatar } from "@/apphelpers/settings/functions/avatar";
 import styles from "@/apphelpers/settings/settings.style";
 import Button from "@/components/button/button";
 import Input from "@/components/input/input";
 import { useAuth } from "@/context/AuthContext";
-import { supabase } from "@/lib/supabase";
-import { decode } from "base64-arraybuffer";
-import * as FileSystem from "expo-file-system/legacy";
-import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
@@ -23,64 +21,12 @@ export default function Settings() {
   const handlePickAvatar = async () => {
     if (!user?.id) return;
 
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "images",
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
-
-    if (result.canceled || !result.assets?.length) {
-      return;
-    }
-
-    const asset = result.assets[0];
     try {
       setUploading(true);
-      if (profile?.avatar_url) {
-        const url = profile.avatar_url;
-        const parts = url.split("/avatars/");
-        const oldPath = parts.length === 2 ? parts[1] : null;
-        if (oldPath) {
-          await supabase.storage.from("avatars").remove([oldPath]);
-        }
-      }
-
-      const fileExt = asset.uri.split(".").pop() ?? "jpg";
-      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-      const filePath = `${user.id}/${fileName}`;
-
-      const base64 = await FileSystem.readAsStringAsync(asset.uri, {
-        encoding: "base64",
-      });
-      const fileData = decode(base64);
-
-      const { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, fileData, {
-          upsert: true,
-          contentType: asset.mimeType ?? "image/jpeg",
-        });
-
-      if (uploadError) {
-        return;
-      }
-
-      const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
-      const publicUrl = data.publicUrl;
-      const { error: updateError } = await updateProfile({
-        avatar_url: publicUrl,
-      });
-      if (updateError) {
-        // optional: Logging/Fehlerhandling
-      }
+      await pickAndUploadAvatar(user, profile, updateProfile);
     } catch (e) {
       // optional: Logging/Fehlerhandling
+      console.error(e);
     } finally {
       setUploading(false);
     }
@@ -97,15 +43,12 @@ export default function Settings() {
     setDeleteError(null);
     setDeleteLoading(true);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email: user.email,
-      password: deletePassword,
-    });
+    const { error } = await verifyPassword(user.email, deletePassword);
 
     setDeleteLoading(false);
 
-    if (authError) {
-      setDeleteError("Passwort ist falsch.");
+    if (error) {
+      setDeleteError(error);
       return;
     }
 
@@ -120,22 +63,7 @@ export default function Settings() {
           onPress: () => {
             (async () => {
               try {
-                const { data, error } = await supabase.functions.invoke(
-                  "delete-account"
-                );
-
-                if (error) {
-                  Alert.alert(
-                    "Fehler",
-                    data?.error ?? error.message ?? "Konto konnte nicht gelöscht werden."
-                  );
-                  return;
-                }
-
-                if (data?.error) {
-                  Alert.alert("Fehler", data.error);
-                  return;
-                }
+                await deleteAccount();
 
                 Alert.alert(
                   "Konto gelöscht",
@@ -149,10 +77,10 @@ export default function Settings() {
                     },
                   ]
                 );
-              } catch {
+              } catch (e: any) {
                 Alert.alert(
                   "Fehler",
-                  "Dein Konto konnte nicht gelöscht werden. Bitte versuche es später erneut."
+                  e.message ?? "Dein Konto konnte nicht gelöscht werden. Bitte versuche es später erneut."
                 );
               }
             })();
@@ -210,12 +138,9 @@ export default function Settings() {
                 setDeleteError(null);
               }}
               secureTextEntry
+              error={!!deleteError}
+              helperText={deleteError ?? undefined}
             />
-            {deleteError ? (
-              <View style={styles.deleteErrorContainer}>
-                <Button label={deleteError} variant="outline" disabled />
-              </View>
-            ) : null}
             <View style={styles.deleteActions}>
               <Button
                 label={deleteLoading ? "Wird geprüft…" : "Endgültig löschen"}
