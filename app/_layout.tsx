@@ -1,6 +1,7 @@
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { colors } from "@/lib/theme";
 import { Stack } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, View } from "react-native";
 
 function RootNavigator() {
@@ -53,8 +54,10 @@ function RootNavigator() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootNavigator />
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }
